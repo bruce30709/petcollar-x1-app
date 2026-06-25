@@ -59,9 +59,18 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
             icon: Icons.favorite,
             title: '健康',
             rows: [
-              Text(h == null
-                  ? '—'
-                  : '心率 ${h.heartRate.toStringAsFixed(1)} BPM  血氧 ${h.spo2}%  體溫 ${h.temperature.toStringAsFixed(1)}°C'),
+              if (h == null)
+                const Text('—')
+              else ...[
+                if (h.tempValid)
+                  Text('體溫 ${h.temperature.toStringAsFixed(1)} °C'),
+                if (h.hrValid)
+                  Text('心率 ${h.heartRate.toStringAsFixed(1)} BPM'),
+                if (h.spo2Valid)
+                  Text('血氧 ${h.spo2} %'),
+                if (!h.tempValid && !h.hrValid && !h.spo2Valid)
+                  const Text('感測器未就緒'),
+              ],
             ],
             footer: SizedBox(
               height: 80,
